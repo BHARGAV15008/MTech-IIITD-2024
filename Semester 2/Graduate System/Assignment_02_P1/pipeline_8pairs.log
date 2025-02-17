@@ -1,0 +1,14 @@
+# started on Wed Feb 12 21:10:31 2025
+
+
+ Performance counter stats for './pa02 p 8':
+
+            87,689      context-switches                                                      
+       1,67,28,286      cache-misses                                                          
+
+       1.065413226 seconds time elapsed
+
+       1.500975000 seconds user
+       2.086749000 seconds sys
+
+

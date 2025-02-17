@@ -1,0 +1,132 @@
+{
+    "GradientBoostingClassifier": {
+        "n_estimators": "randint(50, 300)",
+        "learning_rate": "loguniform(1e-3, 1)",
+        "max_depth": "randint(3, 10)",
+        "min_samples_split": "randint(2, 20)",
+        "min_samples_leaf": "randint(1, 10)",
+        "subsample": "uniform(0.6, 1.0)",
+        "max_features": ["sqrt", "log2", null],
+        "criterion": ["friedman_mse", "squared_error"]
+    },
+    "XGBoost": {
+        "n_estimators": "randint(50, 300)",
+        "learning_rate": "loguniform(1e-3, 1)",
+        "max_depth": "randint(3, 10)",
+        "subsample": "uniform(0.6, 1.0)",
+        "colsample_bytree": "uniform(0.6, 1.0)",
+        "min_child_weight": "randint(1, 7)",
+        "gamma": "uniform(0, 0.5)",
+        "alpha": "loguniform(1e-3, 10)",
+        "lambda": "loguniform(1e-3, 10)",
+        "scale_pos_weight": "uniform(1, 5)"
+    },
+    "LightGBM": {
+        "n_estimators": "randint(50, 300)",
+        "learning_rate": "loguniform(1e-3, 1)",
+        "max_depth": "randint(3, 10)",
+        "num_leaves": "randint(20, 150)",
+        "min_child_samples": "randint(10, 100)",
+        "subsample": "uniform(0.6, 1.0)",
+        "colsample_bytree": "uniform(0.6, 1.0)",
+        "reg_alpha": "loguniform(1e-3, 10)",
+        "reg_lambda": "loguniform(1e-3, 10)",
+        "min_split_gain": "uniform(0, 0.5)",
+        "bagging_freq": "randint(0, 10)"
+    },
+    "RandomForestClassifier": {
+        "n_estimators": "randint(50, 300)",
+        "max_depth": [null, 10, 20, 30, 40, 50],
+        "min_samples_split": "randint(2, 20)",
+        "min_samples_leaf": "randint(1, 10)",
+        "max_features": ["sqrt", "log2", null],
+        "bootstrap": [true, false],
+        "class_weight": [null, "balanced", "balanced_subsample"],
+        "criterion": ["gini", "entropy"],
+        "min_weight_fraction_leaf": "uniform(0, 0.2)",
+        "oob_score": [true, false]
+    },
+    "LogisticRegression": {
+        "C": "loguniform(1e-4, 1e2)",
+        "solver": ["lbfgs", "liblinear", "newton-cg", "sag"],
+        "max_iter": "randint(100, 1000)",
+        "penalty": ["l1", "l2", "elasticnet"],
+        "class_weight": [null, "balanced"],
+        "fit_intercept": [true, false],
+        "tol": "loguniform(1e-6, 1e-3)",
+        "multi_class": ["auto", "ovr", "multinomial"],
+        "warm_start": [true, false]
+    },
+    "DecisionTreeClassifier": {
+        "max_depth": [null, 10, 20, 30, 40, 50],
+        "min_samples_split": "randint(2, 20)",
+        "min_samples_leaf": "randint(1, 10)",
+        "criterion": ["gini", "entropy"],
+        "max_features": ["sqrt", "log2", null],
+        "class_weight": [null, "balanced"],
+        "min_weight_fraction_leaf": "uniform(0, 0.2)",
+        "splitter": ["best", "random"]
+    },
+    "KNN": {
+        "n_neighbors": "randint(1, 20)",
+        "weights": ["uniform", "distance"],
+        "algorithm": ["auto", "ball_tree", "kd_tree", "brute"],
+        "leaf_size": "randint(10, 50)",
+        "p": [1, 2],
+        "metric": ["minkowski", "euclidean", "manhattan"],
+        "n_jobs": [-1]
+    },
+    "SVC": {
+        "C": "loguniform(1e-4, 1e2)",
+        "kernel": ["linear", "rbf", "poly", "sigmoid"],
+        "gamma": ["scale", "auto", "loguniform(1e-4, 1e-1)"],
+        "degree": [2, 3, 4],
+        "coef0": "uniform(0, 1)",
+        "shrinking": [true, false],
+        "probability": [true],
+        "class_weight": [null, "balanced"],
+        "tol": "loguniform(1e-5, 1e-3)"
+    },
+    "NaiveBayes": {
+        "var_smoothing": "loguniform(1e-10, 1e-5)",
+        "fit_prior": [true, false],
+        "alpha": "uniform(0, 2.0)",
+        "binarize": "uniform(0, 1)"
+    },
+    "CatBoost": {
+        "iterations": "randint(50, 300)",
+        "learning_rate": "loguniform(1e-3, 1)",
+        "depth": "randint(3, 10)",
+        "l2_leaf_reg": "uniform(1, 10)",
+        "border_count": [32, 64, 128],
+        "bagging_temperature": "uniform(0, 1)",
+        "random_strength": "uniform(1, 20)",
+        "grow_policy": ["SymmetricTree", "Depthwise"],
+        "min_data_in_leaf": "randint(1, 50)",
+        "max_leaves": "randint(20, 100)",
+        "scale_pos_weight": "uniform(1, 5)"
+    },
+    "AdaBoost": {
+        "n_estimators": "randint(50, 300)",
+        "learning_rate": "loguniform(1e-3, 1)",
+        "algorithm": ["SAMME", "SAMME.R"],
+        "base_estimator": [null],
+        "random_state": [null, 42]
+    },
+    "Bagging": {
+        "n_estimators": "randint(10, 200)",
+        "max_samples": "uniform(0.5, 1.0)",
+        "max_features": "uniform(0.5, 1.0)",
+        "bootstrap": [true, false],
+        "bootstrap_features": [true, false],
+        "oob_score": [true, false],
+        "warm_start": [true, false],
+        "n_jobs": [-1]
+    },
+    "QuadraticDiscriminantAnalysis": {
+        "reg_param": "uniform(0, 1.0)",
+        "tol": "loguniform(1e-5, 1e-3)",
+        "store_covariance": [true, false],
+        "covariance_estimator": [null]
+    }
+}

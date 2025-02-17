@@ -1,0 +1,15 @@
+# started on Wed Feb 12 21:09:52 2025
+
+
+ Performance counter stats for './pa02 c 4':
+
+ 1,01,55,10,47,109      cycles                                                                
+   15,31,68,29,441      instructions                     #    0.15  insn per cycle            
+       4,90,74,106      cache-misses                                                          
+
+      12.536776830 seconds time elapsed
+
+      28.667658000 seconds user
+       3.105940000 seconds sys
+
+
