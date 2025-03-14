@@ -1,4 +1,4 @@
-# Advanced Analysis Report for Part B - Pipeline Program with Producer-Consumer Threads
+# Pipeline Program with Producer-Consumer Threads
 
 ## Overview
 This document provides a comprehensive analysis of the implementation and performance evaluation of a multithreaded producer-consumer pipeline program. The objective of this assignment is to explore the efficiency of multithreading in data processing and to analyze the performance using the `perf` tool.
