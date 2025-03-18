@@ -19,10 +19,21 @@ void fget(const char *path) {
     }
 
     const char *user = pw->pw_name;
+    
+    // Debug: Print current user
+    printf("Current user: %s\n", user);
 
-    // Check ACL and DAC permissions
-    if (!checkAcl(path, user, 'r') && access(path, R_OK) != 0) {
-        fprintf(stderr, "Access denied: No read permission\n");
+    // Check ACL permissions first
+    int acl_allowed = checkAcl(path, user, 'r');
+    printf("ACL check result: %s\n", acl_allowed ? "Allowed" : "Denied");
+    
+    // Check standard permissions
+    int std_allowed = (access(path, R_OK) == 0);
+    printf("Standard permission check result: %s\n", std_allowed ? "Allowed" : "Denied");
+
+    // Check ACL and DAC permissions - allow if either permits
+    if (!(acl_allowed || std_allowed)) {
+        fprintf(stderr, "Access denied: No read permission on file '%s'\n", path);
         return;
     }
 
@@ -42,10 +53,13 @@ void fget(const char *path) {
     }
 
     uid_t file_owner = st.st_uid;
-    if (setresuid(-1, file_owner, file_owner) < 0) {
-        perror("setresuid");
-        close(fd);
-        return;
+    // Only drop privileges if we're running as root
+    if (realUid == 0) {
+        if (setresuid(-1, file_owner, realUid) < 0) {
+            perror("setresuid");
+            close(fd);
+            return;
+        }
     }
 
     // Read file contents
@@ -55,9 +69,11 @@ void fget(const char *path) {
         write(STDOUT_FILENO, buf, bytes);
     }
 
-    // Restore privileges
-    if (setresuid(-1, realUid, realUid) < 0) {
-        perror("setresuid restore");
+    // Restore privileges if we dropped them
+    if (realUid == 0) {
+        if (setresuid(-1, realUid, realUid) < 0) {
+            perror("setresuid restore");
+        }
     }
 
     close(fd);

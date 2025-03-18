@@ -3,7 +3,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <pwd.h>
-#include <unistd.h> // Add this line for getuid
+#include <unistd.h>
 #ifdef __FreeBSD__
 #include <sys/extattr.h>
 #else
@@ -27,8 +27,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    if (st.st_uid != getuid()) {
-        fprintf(stderr, "Only the file owner can set ACLs\n");
+    // Allow either the file owner or root to set ACLs
+    if (st.st_uid != getuid() && getuid() != 0) {
+        fprintf(stderr, "Only the file owner or root can set ACLs\n");
         return 1;
     }
 
@@ -37,7 +38,8 @@ int main(int argc, char *argv[]) {
     snprintf(aclValue, sizeof(aclValue), "%s,%s", user, perms);
 
 #ifdef __FreeBSD__
-    if (extattr_set_file(path, EXTATTR_NAMESPACE_USER, "user.acl", aclValue, strlen(aclValue)) < 0) {
+    // On FreeBSD, we need to use the USER namespace and the attribute name is just "acl"
+    if (extattr_set_file(path, EXTATTR_NAMESPACE_USER, "acl", aclValue, strlen(aclValue)) < 0) {
         perror("extattr_set_file");
         return 1;
     }
@@ -48,5 +50,6 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
+    printf("ACL set successfully for %s: %s,%s\n", path, user, perms);
     return 0;
 }

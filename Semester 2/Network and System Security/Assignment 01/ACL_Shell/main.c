@@ -17,10 +17,12 @@ void aclShell() {
 
         // Parse command and arguments
         char *cmd = strtok(command, " ");
-        char *arg = strtok(NULL, "");
+        char *arg1 = strtok(NULL, " ");
+        char *arg2 = strtok(NULL, " ");
+        char *arg3 = strtok(NULL, " ");
 
-        if (cmd && strcmp(cmd, "fget") == 0 && arg) {
-            fget(arg); // fget is implemented in fileOperations.c
+        if (cmd && strcmp(cmd, "fget") == 0 && arg1) {
+            fget(arg1);
         } else if (cmd && strcmp(cmd, "exit") == 0) {
             break;
         } else if (cmd) {
@@ -29,17 +31,17 @@ void aclShell() {
             if (pid == 0) {
                 // Child process: execute the command
                 if (strcmp(cmd, "my_ls") == 0) {
-                    execlp("./my_ls", "my_ls", arg, NULL);
+                    execlp("./my_ls", "my_ls", arg1, NULL);
                 } else if (strcmp(cmd, "fput") == 0) {
-                    execlp("./fput", "fput", arg, NULL);
+                    execlp("./fput", "fput", arg1, NULL);
                 } else if (strcmp(cmd, "my_cd") == 0) {
-                    execlp("./my_cd", "my_cd", arg, NULL);
+                    execlp("./my_cd", "my_cd", arg1, NULL);
                 } else if (strcmp(cmd, "create_dir") == 0) {
-                    execlp("./create_dir", "create_dir", arg, NULL);
+                    execlp("./create_dir", "create_dir", arg1, NULL);
                 } else if (strcmp(cmd, "setacl") == 0) {
-                    execlp("./setacl", "setacl", arg, NULL);
+                    execlp("./setacl", "setacl", arg1, arg2, arg3, NULL);
                 } else if (strcmp(cmd, "getacl") == 0) {
-                    execlp("./getacl", "getacl", arg, NULL);
+                    execlp("./getacl", "getacl", arg1, NULL);
                 } else {
                     fprintf(stderr, "Unknown command: %s\n", cmd);
                     exit(1);
