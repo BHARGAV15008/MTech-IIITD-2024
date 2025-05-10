@@ -1,0 +1,35 @@
+CC = gcc
+CFLAGS = -Wall -Iinclude
+LDFLAGS = -lssl -lcrypto -lpam -lpthread
+
+all: reverseProxy client
+
+reverseProxy: src/reverseProxy.o src/tlsServer.o src/pamAuth.o src/httpClient.o src/tlsClient.o src/utils.o
+	$(CC) -o reverseProxy src/reverseProxy.o src/tlsServer.o src/pamAuth.o src/httpClient.o src/tlsClient.o src/utils.o $(LDFLAGS)
+
+client: src/client.o src/tlsClient.o src/utils.o
+	$(CC) -o client src/client.o src/tlsClient.o src/utils.o $(LDFLAGS)
+
+src/reverseProxy.o: src/reverseProxy.c include/tlsServer.h include/pamAuth.h include/httpClient.h include/utils.h
+	$(CC) $(CFLAGS) -c src/reverseProxy.c -o src/reverseProxy.o
+
+src/client.o: src/client.c include/tlsClient.h include/utils.h
+	$(CC) $(CFLAGS) -c src/client.c -o src/client.o
+
+src/tlsServer.o: src/tlsServer.c include/tlsServer.h
+	$(CC) $(CFLAGS) -c src/tlsServer.c -o src/tlsServer.o
+
+src/tlsClient.o: src/tlsClient.c include/tlsClient.h
+	$(CC) $(CFLAGS) -c src/tlsClient.c -o src/tlsClient.o
+
+src/pamAuth.o: src/pamAuth.c include/pamAuth.h include/utils.h
+	$(CC) $(CFLAGS) -c src/pamAuth.c -o src/pamAuth.o
+
+src/httpClient.o: src/httpClient.c include/httpClient.h include/tlsClient.h include/utils.h
+	$(CC) $(CFLAGS) -c src/httpClient.c -o src/httpClient.o
+
+src/utils.o: src/utils.c include/utils.h
+	$(CC) $(CFLAGS) -c src/utils.c -o src/utils.o
+
+clean:
+	rm -f reverseProxy client src/*.o

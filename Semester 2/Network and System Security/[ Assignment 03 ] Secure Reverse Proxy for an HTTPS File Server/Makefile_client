@@ -1,0 +1,19 @@
+CC = gcc
+CFLAGS = -Wall -Iinclude
+LDFLAGS = -lssl -lcrypto
+
+client: src/client.o src/tlsClient.o src/utils.o
+	$(CC) -o client src/client.o src/tlsClient.o src/utils.o $(LDFLAGS)
+
+src/client.o: src/client.c include/tlsClient.h include/utils.h
+	$(CC) $(CFLAGS) -c src/client.c -o src/client.o
+
+src/tlsClient.o: src/tlsClient.c include/tlsClient.h include/utils.h
+	$(CC) $(CFLAGS) -c src/tlsClient.c -o src/tlsClient.o
+
+src/utils.o: src/utils.c include/utils.h
+	$(CC) $(CFLAGS) -c src/utils.c -o src/utils.o
+
+clean:
+	rm -f client src/*.o
+
